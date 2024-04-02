@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.joongomarket.dto.request.post.PostBookmarkReqeustDto;
 import com.example.joongomarket.dto.request.post.PostCommentRequestDto;
 import com.example.joongomarket.dto.request.post.PostRequestDto;
+import com.example.joongomarket.dto.response.post.DeleteCommentResponseDto;
 import com.example.joongomarket.dto.response.post.DeletePostResponseDto;
 import com.example.joongomarket.dto.response.post.GetPostListResponseDto;
 import com.example.joongomarket.dto.response.post.GetPostMyListResponseDto;
@@ -109,6 +110,15 @@ public class PostController {
         @PathVariable("postId") int postId
     ) {
         ResponseEntity<? super DeletePostResponseDto> response = postService.deletePost(userId, postId);
+        return response;
+    }
+    
+    @DeleteMapping("/comment/{commentId}")
+    public ResponseEntity<? super DeleteCommentResponseDto> deleteComment(
+    @AuthenticationPrincipal String userId,
+    @PathVariable("commentId") int commentId
+    ) {
+        ResponseEntity<? super DeleteCommentResponseDto> response = postService.deleteComment(userId, commentId);
         return response;
     }
 }

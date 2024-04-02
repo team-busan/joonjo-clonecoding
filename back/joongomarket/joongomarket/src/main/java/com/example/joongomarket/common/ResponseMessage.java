@@ -18,4 +18,6 @@ public interface ResponseMessage {
     String NOT_EXIST_POST = "Not Exist Post.";
 
     String NOT_EXIST_USER = "Not Exist User.";
+
+    String NOT_EXIST_COMMENT = "Not Exist Comment.";
 }

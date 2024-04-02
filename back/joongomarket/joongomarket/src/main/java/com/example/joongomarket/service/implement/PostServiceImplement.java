@@ -13,6 +13,7 @@ import com.example.joongomarket.dto.request.post.PostBookmarkReqeustDto;
 import com.example.joongomarket.dto.request.post.PostCommentRequestDto;
 import com.example.joongomarket.dto.request.post.PostRequestDto;
 import com.example.joongomarket.dto.response.ResponseDto;
+import com.example.joongomarket.dto.response.post.DeleteCommentResponseDto;
 import com.example.joongomarket.dto.response.post.DeletePostResponseDto;
 import com.example.joongomarket.dto.response.post.GetPostListResponseDto;
 import com.example.joongomarket.dto.response.post.GetPostMyListResponseDto;
@@ -247,6 +248,27 @@ public class PostServiceImplement implements PostService {
 
             postRepository.delete(postsEntity);
             return DeletePostResponseDto.success();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+    }
+
+    @Override
+    public ResponseEntity<? super DeleteCommentResponseDto> deleteComment(String userId, int CommentId) {
+        try {
+            CommentEntity commentEntity = commentRepository.findByCommentId(CommentId);
+            if(commentEntity == null) {
+                return DeleteCommentResponseDto.existComment();
+            }
+
+            boolean isEqualWriter = userId.equals(commentEntity.getUserId());
+            if(!isEqualWriter) {
+                return DeleteCommentResponseDto.existUser();
+            }
+
+            commentRepository.deleteByCommentId(CommentId);
+            return DeleteCommentResponseDto.success();
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();

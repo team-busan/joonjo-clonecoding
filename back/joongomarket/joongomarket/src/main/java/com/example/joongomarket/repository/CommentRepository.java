@@ -12,7 +12,10 @@ import com.example.joongomarket.entity.CommentEntity;
 @Repository
 public interface CommentRepository extends JpaRepository<CommentEntity, Integer>{
     List<CommentEntity> findByPostIdOrderByWriteDateTimeDesc(int postId);
-
+    CommentEntity findByCommentId(int commentId);
     @Transactional
     public void deleteByPostId(int postId);
+
+    @Transactional
+    public void deleteByCommentId(int commentId);
 }

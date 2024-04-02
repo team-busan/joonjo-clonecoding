@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import com.example.joongomarket.dto.request.post.PostBookmarkReqeustDto;
 import com.example.joongomarket.dto.request.post.PostCommentRequestDto;
 import com.example.joongomarket.dto.request.post.PostRequestDto;
+import com.example.joongomarket.dto.response.post.DeleteCommentResponseDto;
 import com.example.joongomarket.dto.response.post.DeletePostResponseDto;
 import com.example.joongomarket.dto.response.post.GetPostListResponseDto;
 import com.example.joongomarket.dto.response.post.GetPostMyListResponseDto;
@@ -28,4 +29,5 @@ public interface PostService {
     ResponseEntity<? super GetPostRandomCategoryResponseDto> getRandomPost();
     ResponseEntity<? super GetPostTopListResponseDto> getPostTop();
     ResponseEntity<? super DeletePostResponseDto> deletePost(String userId, int postId);
+    ResponseEntity<? super DeleteCommentResponseDto> deleteComment(String userId, int CommentId);
 } 

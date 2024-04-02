@@ -18,4 +18,6 @@ public interface ResponseCode {
     String NOT_EXIST_POST = "NEP";
 
     String NOT_EXIST_USER = "NEU";
+
+    String NOT_EXIST_COMMENT = "NEC";
 }
