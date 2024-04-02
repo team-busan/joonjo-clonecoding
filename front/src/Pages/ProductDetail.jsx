@@ -5,6 +5,8 @@ import DetailSlick from "../Components/DetailSlick";
 import DetailContents from "../Components/DetailContents";
 import DetailInfo from "../Components/DetailInfo";
 import Comment from "../Components/Comment";
+import UserViewedProductsContainer from "../Components/home/UserViewedProductsContainer";
+import ProductCardSlider from "../Components/home/ProductCardSlider";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -12,6 +14,18 @@ const ProductDetail = () => {
   const [users, setUsers] = useState({});
   const [salesProducts, setSalesProducts] = useState([]);
   const [comments, setComments] = useState([]);
+  const [catagoryProduct, setCatagoryProduct] = useState([]);
+
+  const settings={
+    slide: "a",
+    infinite: true,
+    speed: 500,
+    slidesToShow: 5,
+    slidesToScroll: 1,
+    dots: true,
+    arrows: false,
+    draggable: true,
+  };
   
   useEffect(() => {
     axiosInstance
@@ -21,6 +35,7 @@ const ProductDetail = () => {
         setUsers(res.data.user);
         setSalesProducts(res.data.sales_product);
         setComments(res.data.comment);
+        setCatagoryProduct(res.data.category_product);
       })
       .catch((error) => {
         console.log("Detail", error);
@@ -63,14 +78,24 @@ const ProductDetail = () => {
 
   console.log(products);
   return (
-  <>
-  <div className="flex w-screen">
-    <DetailSlick productMain={products} />
-    <DetailContents productContent={products}/>
+    
+  <div className="px-0 tablet:px-8 w-full flex justify-center">
+    <div className="w-full tablet:w-[1024px] desktop:w-[1280px]">
+      <UserViewedProductsContainer />
+      <div className="flex w-full my-10">
+        <DetailSlick productMain={products} />
+        <DetailContents productContent={products}/>
+      </div>
+      <DetailInfo productInfo={products} userInfo={users} salesInfo={salesProducts} />
+      <Comment comment={comments}/>
+      <ProductCardSlider
+          data={catagoryProduct}
+          title={`${users.user_nickname}님 이런 상품 어때요?`}
+          settings={settings}
+        />
+    </div>
+      
   </div>
-  <DetailInfo productInfo={products} userInfo={users} salesInfo={salesProducts} />
-  <Comment comment={comments}/>
-  </>
 )};
 
 export default ProductDetail;

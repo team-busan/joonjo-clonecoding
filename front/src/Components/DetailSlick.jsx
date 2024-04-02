@@ -3,6 +3,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css"; 
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
+import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 
 
 export default function DetailSlick({productMain}) {
@@ -16,8 +17,6 @@ export default function DetailSlick({productMain}) {
       slidesToShow: 1,
       slidesToScroll: 1,
       arrows: false,
-      // nextArrow: <SampleNextArrow />,
-      // prevArrow: <SamplePrevArrow />,
   };
   if (!productMain) {
     return <div>loading...</div>;
@@ -25,7 +24,7 @@ export default function DetailSlick({productMain}) {
   return (
     <div className=' w-2/5 flex'>
       <div  onClick={previous} onKeyDown={previous} role="presentation" className='relative top-44'>
-        <SlArrowLeft />
+        <FaAngleLeft className="text-2xl"/>
       </div>
       <div className='container w-full bg-slate-100'>
         <Slider {...settings} ref={slickRef}>
@@ -38,7 +37,7 @@ export default function DetailSlick({productMain}) {
         </Slider>
         </div>
         <div  onClick={next} onKeyDown={next} role="presentation" className='relative top-44'>
-        <SlArrowRight />
+        <FaAngleRight className="text-2xl" />
       
       </div>
     </div>
