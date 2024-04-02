@@ -1,10 +1,16 @@
 import React from 'react';
-import { CiHeart } from "react-icons/ci";
+import { FaHeart,FaRegHeart } from "react-icons/fa";
+import { useState, useEffect } from 'react';
 
 
 export default function DetailContents({productContent}) {
+  const [isWish, setIsWish] = useState(false);
+
+  const wishHandler = () => {
+    setIsWish(!isWish)
+  }
   return (
-    <div className='w-3/5 items-center mx-32'>
+    <div className='w-3/5 items-center ml-20'>
       <h3>홈 &gt; {productContent.main_category} &gt; {productContent.sub_category} </h3>
       <h2>{productContent.title}</h2>
       <h2 className=''>{productContent.price} 원</h2>
@@ -22,9 +28,10 @@ export default function DetailContents({productContent}) {
         </div>
       </div>
       <div className='flex items-center justify-around w-full'>
-        <div className='text-gray-500'>
-        <CiHeart size="60"/>
-        </div>
+        
+        <button className='text-gray-500' onClick={wishHandler}>
+        {isWish?<FaHeart size="50" color='red' />:<FaRegHeart size="50"/>}
+        </button>
         <div className='w-3/4 text-center border-gray-300 rounded-3xl border-2 py-5'>
           <div>
             <h3>채팅하기</h3>
