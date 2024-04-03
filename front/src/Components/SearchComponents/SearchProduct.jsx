@@ -60,9 +60,9 @@ export default function SearchProduct({ products }) {
     setCurrentPage(pageNumber);
   };
 
-  const itemsPerPage = 20;
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
+  const itemsPage = 20;
+  const startIndex = (currentPage - 1) * itemsPage;
+  const endIndex = startIndex + itemsPage;
 
   if (loading) {
     return <div>Loading...</div>;
@@ -117,7 +117,7 @@ export default function SearchProduct({ products }) {
 </div>
 
       <footer className="flex gap-5 items-center">
-        {[...Array(Math.ceil(products.length / itemsPerPage)).keys()].map((pageNumber) => (
+        {[...Array(Math.ceil(products.length / itemsPage)).keys()].map((pageNumber) => (
           <button 
             key={pageNumber}
             onClick={() => handlePageChange(pageNumber + 1)}
