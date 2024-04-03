@@ -3,22 +3,61 @@ import React, { useState } from "react";
 import Card from "../Components/Card.jsx";
 import { Products } from "../stores/mockData.js";
 import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const User = () => {
   const [selectedButton, setSelectedButton] = useState("전체");
   const [selectedTab, setSelectedTab] = useState("최신순");
+  const [selectedPage, setSelectedPage] = useState("판매내역");
   let { id } = useParams();
 
+  const productsByRecentDate = [...Products].sort(
+    (a, b) => new Date(b.write_date_time) - new Date(a.write_date_time)
+  );
+  const productsByHighPrice = [...Products].sort((a, b) => b.price - a.price);
+  const productsByLowPrice = [...Products].sort((a, b) => a.price - b.price);
+
+  let selectedProducts = [];
+  switch (selectedTab) {
+    case "최신순":
+      selectedProducts = productsByRecentDate;
+      break;
+    case "낮은가격순":
+      selectedProducts = productsByLowPrice;
+      break;
+    case "높은가격순":
+      selectedProducts = productsByHighPrice;
+      break;
+    default:
+      selectedProducts = Products;
+  }
+
   return (
-    <div className="flex justify-center w-[1280px] space-x-8 mb-20">
+    <div className="flex justify-center w-[1280px space-x-8 mt-10 mb-20">
       <div className="flex w-[174px] flex-col">
         <h2 className="text-2xl mb-4">마이 페이지</h2>
         <hr className="border-t border-gray-500 my-2" />
         <ul className="text-lg">
-          <li className="my-2">판매내역</li>
-          <li className="my-2">구매내역</li>
-          <li className="my-2">찜한상품</li>
-          <li className="my-2">프로필 수정</li>
+          <li className="my-2">
+            <button onClick={() => setSelectedPage("판매내역")}>
+              판매내역
+            </button>
+          </li>
+          <li className="my-2">
+            <button onClick={() => setSelectedPage("구매내역")}>
+              구매내역
+            </button>
+          </li>
+          <li className="my-2">
+            <button onClick={() => setSelectedPage("찜한상품")}>
+              찜한상품
+            </button>
+          </li>
+          <li className="my-2">
+            <button onClick={() => setSelectedPage("프로필 수정")}>
+              프로필 수정
+            </button>
+          </li>
         </ul>
       </div>
       <div className="flex flex-col">
@@ -42,9 +81,14 @@ const User = () => {
               <div className="w-full h-[91px] rounded-lg bg-[#EEEEEE] flex items-center px-4">
                 <MdAssignment className="text-4xl text-primary" />
                 <p className="ml-2">중고상품을 올려보세요!</p>
-                <button className="bg-primary rounded-full ml-auto px-4 py-2 text-sm text-white">
-                  판매하기
-                </button>
+                <Link
+                  to="/product/register"
+                  className="flex items-center gap-1  ml-auto"
+                >
+                  <button className="bg-primary rounded-full ml-auto px-4 py-2 text-sm text-white">
+                    판매하기
+                  </button>
+                </Link>
               </div>
               <div className="flex justify-between w-full h-[91px] rounded-lg bg-[#EEEEEE]">
                 <div className="h-full w-[calc(100%/3)] border-r border-gray-400 flex items-center justify-center flex-col">
@@ -63,25 +107,27 @@ const User = () => {
             </div>
           </div>
         </div>
+        {selectedPage === "판매내역" && (
+          <div>
         <div className="mt-[59px] text-[24px] font-bold">내 상품</div>
         <div className="mt-[18px] w-full h-[58px] border-b border-[#9CA3AF] bg-white flex items-center mb-[24px]">
           <button
-            className={`w-[160px] h-full text-center border-b-2 border-transparent font-semibold focus:outline-none 
-              ${selectedButton === "전체" ? "text-black border-black border-b-8" : "text-[#9CA3AF]"}`}
+            className={`w-[160px] h-full text-center font-semibold focus:outline-none 
+    ${selectedButton === "전체" ? "text-black border-black border-b-2" : "text-[#9CA3AF]"}`}
             onClick={() => setSelectedButton("전체")}
           >
             전체
           </button>
           <button
-            className={`w-[160px] h-full text-center border-b-2 border-transparent font-semibold focus:outline-none 
-              ${selectedButton === "판매중" ? "text-black border-black border-b-8" : "text-[#9CA3AF]"}`}
+            className={`w-[160px] h-full text-center font-semibold focus:outline-none 
+    ${selectedButton === "판매중" ? "text-black border-black border-b-2" : "text-[#9CA3AF]"}`}
             onClick={() => setSelectedButton("판매중")}
           >
             판매중
           </button>
           <button
-            className={`w-[160px] h-full text-center border-b-2 border-transparent font-semibold focus:outline-none 
-              ${selectedButton === "판매완료" ? "text-black border-black border-b-8" : "text-[#9CA3AF]"}`}
+            className={`w-[160px] h-full text-center font-semibold focus:outline-none 
+    ${selectedButton === "판매완료" ? "text-black border-black border-b-2" : "text-[#9CA3AF]"}`}
             onClick={() => setSelectedButton("판매완료")}
           >
             판매완료
@@ -114,22 +160,62 @@ const User = () => {
 
         {selectedButton === "전체" && (
           <div className="grid grid-cols-5 gap-4">
-            {Products.map((product) => (
-            <Card
-            key={product.product_id}
-            productId={product.product_id}
-          />
+            {selectedProducts.map((product) => (
+              <Card key={product.product_id} productId={product.product_id} />
             ))}
           </div>
         )}
         {selectedButton === "판매중" && (
           <div className="grid grid-cols-5 gap-4">
-
+            {selectedProducts.map((product) => (
+              <Card key={product.product_id} productId={product.product_id} />
+            ))}
           </div>
         )}
         {selectedButton === "판매완료" && (
           <div className="grid grid-cols-5 gap-4">
+            {selectedProducts.map((product) => (
+              <Card key={product.product_id} productId={product.product_id} />
+            ))}
+          </div>
+        )}
+          </div>
 
+)}
+        {selectedPage === "찜한상품" && (
+          <div>
+            <div className="mt-[59px] text-[24px] font-bold">찜한 상품</div>
+            <div className="mt-[18px] w-full h-[58px] border-b border-[#9CA3AF] bg-white flex items-center mb-[24px]">
+            <button className={"w-[160px] h-full text-center font-semibold focus:outline-none text-black border-black border-b-2"}>
+              전체
+            </button>
+              
+
+
+            </div>
+            <div className="flex justify-between mb-5">
+          <p>총 0 개</p>
+          <div>
+            <button
+              className={`mr-2 px-2 py-1 rounded-md focus:outline-none ${selectedTab === "최신순" ? "text-black" : "text-[#9CA3AF]"}`}
+              onClick={() => setSelectedTab("최신순")}
+            >
+              최신순
+            </button>
+            <button
+              className={`mr-2 px-2 py-1 rounded-md focus:outline-none ${selectedTab === "낮은가격순" ? "text-black" : "text-[#9CA3AF]"}`}
+              onClick={() => setSelectedTab("낮은가격순")}
+            >
+              낮은가격순
+            </button>
+            <button
+              className={`px-2 py-1 rounded-md focus:outline-none ${selectedTab === "높은가격순" ? "text-black" : "text-[#9CA3AF]"}`}
+              onClick={() => setSelectedTab("높은가격순")}
+            >
+              높은가격순
+            </button>
+          </div>
+        </div>
           </div>
         )}
       </div>

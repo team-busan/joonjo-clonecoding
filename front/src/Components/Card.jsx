@@ -13,13 +13,19 @@ const Card = ({ productId }) => {
           </div>
         );
       }
+
+      const formattedDate = new Date(product.write_date_time).toLocaleDateString('ko-KR', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
       
   return (
     <div className="w-[190px] h-[330px] rounded-lg flex flex-col justify-between">
       <img src={product.main_upload_url} alt={product.title} className="w-full h-[190px] object-cover rounded-lg" />
       <div className="text-[16px] text-gray-800 mt-2">{product.title}</div>
       <div className="text-[18px] text-gray-700 mt-7">{product.price}원</div>
-      <div className="text-[14px] text-gray-600">{product.write_date_time}</div>
+      <div className="text-[14px] text-gray-600">{formattedDate}</div>
     </div>
   );
 };
