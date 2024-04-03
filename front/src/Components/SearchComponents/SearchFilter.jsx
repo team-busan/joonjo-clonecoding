@@ -1,8 +1,16 @@
 import React, { useState } from 'react';
 import { FaPlus, FaMinus } from "react-icons/fa";
-import { IoIosClose, IoMdReturnLeft } from "react-icons/io";
+import { IoIosClose } from "react-icons/io";
+import {
+  mainCategories,
+  clothSubCategories,
+  electronicsSubCategories,
+  furnitureSubCategories,
+  livingSubCategories,
+  hobbySubCategories,
+} from '../../Constants/Categories';
 
-export default function SearchFilter({setSelectedCategory, selectedCategory, onPriceChange}) {
+export default function SearchFilter({ setSelectedCategory, selectedCategory, onPriceChange }) {
   const [categoryBtn, setCategoryBtn] = useState(false);
   const [expandedCategory, setExpandedCategory] = useState(null);
 
@@ -21,32 +29,27 @@ export default function SearchFilter({setSelectedCategory, selectedCategory, onP
   };
 
   const onType = (type) => {
-    if(type === 0){
-      setSelectedCategory({...selectedCategory, product_status : "중고"})
-    }else{
-      setSelectedCategory({...selectedCategory, product_status : "새상품"})
-    }
-  }
+    setSelectedCategory({ ...selectedCategory, product_status: type === 0 ? "중고" : "새상품" });
+  };
 
   const onCancel = () => {
-    setSelectedCategory({main : "", sub : "", product_status : "", lowPrice : 0, highPrice : 0})
-  }
+    setSelectedCategory({ main: "", sub: "", product_status: "", lowPrice: 0, highPrice: 0 });
+  };
 
   const onLowPrice = (e) => {
-    setSelectedCategory({...selectedCategory, lowPrice : e.target.value});
-  }
+    setSelectedCategory({ ...selectedCategory, lowPrice: e.target.value });
+  };
 
   const onHighPrice = (e) => {
-    setSelectedCategory({...selectedCategory, highPrice : e.target.value});
-  }
-
+    setSelectedCategory({ ...selectedCategory, highPrice: e.target.value });
+  };
 
   const categories = [
-    { id: 1, name: '의류', subcategories: ['여성의류', '남성의류', '유아동', '패션잡화', '악세서리'] },
-    { id: 2, name: '전자기기', subcategories: ['가전제품', '모바일/태블릿', '노트북/PC', '카메라/캠코더', '부품'] },
-    { id: 3, name: '가구/인테리어', subcategories: ['침실가구', '거실가구', '주방가구', '인테리어소품', '기타가구'] },
-    { id: 4, name: '리빙/생활', subcategories: ['주방용품', '욕실용품', '청소/세탁용품', '기타생활용품', '차량용품'] },
-    { id: 5, name: '반려동물/취미', subcategories: ['반려동물용품', '음악', '게임', '스포츠', '도서/음반/문구'] },
+    { name: '의류', subcategories: clothSubCategories },
+    { name: '전자기기', subcategories: electronicsSubCategories },
+    { name: '가구/인테리어', subcategories: furnitureSubCategories },
+    { name: '리빙/생활', subcategories: livingSubCategories },
+    { name: '반려동물/취미', subcategories: hobbySubCategories },
   ];
 
   return (
@@ -64,7 +67,7 @@ export default function SearchFilter({setSelectedCategory, selectedCategory, onP
           </td>
         </tr>
         {categoryBtn && categories.map(category => (
-          <tr key={category.id}>
+          <tr key={category.name}>
             <th className="bg-gray-200"></th>
             <td colSpan="2" className="p-2 border-b border-gray-200">
               <ul className="flex">
@@ -90,19 +93,19 @@ export default function SearchFilter({setSelectedCategory, selectedCategory, onP
             <input 
               type="text"
               className="border border-gray-200 rounded-md px-2 py-1 mr-2" placeholder="최소가격"
-              onChange = {(e) => onLowPrice(e)}
+              onChange={(e) => onLowPrice(e)}
             />
             <span>~</span>
             <input
               type="text"
               className="border border-gray-200 rounded-md px-2 py-1 ml-2" placeholder="최대가격"
-              onChange = {(e) => onHighPrice(e)} />
+              onChange={(e) => onHighPrice(e)} />
             <button 
               className="bg-primary text-white rounded-md px-4 py-1 ml-2"
-              onClick = {() => onPriceChange()}
+              onClick={() => onPriceChange()}
             >
               적용
-          </button>
+            </button>
           </td>
         </tr>
         <tr>
@@ -113,7 +116,7 @@ export default function SearchFilter({setSelectedCategory, selectedCategory, onP
                 type="radio"
                 name="productState"
                 className="form-radio text-gray-400"
-                onChange = {() => onType(0)}
+                onChange={() => onType(0)}
               />
               <span className="ml-2">중고상품</span>
             </label>
@@ -122,7 +125,7 @@ export default function SearchFilter({setSelectedCategory, selectedCategory, onP
                 type="radio"
                 name="productState"
                 className="form-radio text-gray-400"
-                onChange ={() => onType(1)}
+                onChange={() => onType(1)}
               />
               <span className="ml-2">새상품</span>
             </label>
@@ -134,7 +137,7 @@ export default function SearchFilter({setSelectedCategory, selectedCategory, onP
             {selectedCategory.sub ? `${selectedCategory.main}/${selectedCategory.sub}` : selectedCategory.main ? `${selectedCategory.main}` : ''}
             {selectedCategory.product_status === "중고" ? ` 중고상품` : selectedCategory.product_status === "새상품" ? ` 새상품` : ''}
             {(selectedCategory.lowPrice > 0 && selectedCategory.highPrice > 0) ? `${selectedCategory.lowPrice}~${selectedCategory.lowPrice}` : ''}
-            <button onClick = {() => onCancel()} className = "">
+            <button onClick={() => onCancel()} className="">
               <IoIosClose className="text-xl text-center"/>
             </button>
           </td>
